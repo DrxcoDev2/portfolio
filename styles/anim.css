@@ -1,0 +1,17 @@
+.animate__fadeIn {
+
+  
+    animation: bounce; /* referring directly to the animation's @keyframe declaration */
+    animation-duration: 2s; /* don't forget to set a duration! */
+    animation-delay: 3s;
+}
+
+.animate__fadeInLeft {
+    animation: fadeInLeft;
+    animation-duration: 3s;
+}
+
+.animate__fadeInRight {
+    animation: fadeInRight;
+    animation-duration: 3s;
+}
