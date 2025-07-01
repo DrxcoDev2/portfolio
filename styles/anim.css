@@ -1,17 +1,27 @@
-.animate__fadeIn {
-
-  
-    animation: bounce; /* referring directly to the animation's @keyframe declaration */
-    animation-duration: 2s; /* don't forget to set a duration! */
-    animation-delay: 3s;
-}
-
-.animate__fadeInLeft {
-    animation: fadeInLeft;
-    animation-duration: 3s;
-}
-
+/* Ocultar al principio para evitar animación al cargar */
+.animate__fadeIn,
+.animate__fadeInLeft,
 .animate__fadeInRight {
-    animation: fadeInRight;
-    animation-duration: 3s;
+  opacity: 0;
+  animation-fill-mode: both; /* para mantener el estado final */
+}
+
+/* Animaciones solo al añadir .animate__animated */
+.animate__animated.animate__fadeIn {
+  opacity: 1;
+  animation-name: bounce;
+  animation-duration: 2s;
+  animation-delay: 3s;
+}
+
+.animate__animated.animate__fadeInLeft {
+  opacity: 1;
+  animation-name: fadeInLeft;
+  animation-duration: 3s;
+}
+
+.animate__animated.animate__fadeInRight {
+  opacity: 1;
+  animation-name: fadeInRight;
+  animation-duration: 3s;
 }
