@@ -114,11 +114,17 @@
 .flex-col {
   flex-direction: column;
 }
+.flex-wrap {
+  flex-wrap: wrap;
+}
 .items-center {
   align-items: center;
 }
 .items-start {
   align-items: flex-start;
+}
+.justify-between {
+  justify-content: space-between;
 }
 .justify-center {
   justify-content: center;
@@ -148,6 +154,9 @@
 .border {
   border-style: var(--tw-border-style);
   border-width: 1px;
+}
+.bg-transparent {
+  background-color: transparent;
 }
 .bg-gradient-to-r {
   --tw-gradient-position: to right in oklab;

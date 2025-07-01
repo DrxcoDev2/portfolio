@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"drxco/utils" // Asegúrate de usar el path correcto si lo estás organizando en carpetas
+	"drxco/utils" // Ajusta el path si es necesario
 )
 
 var (
@@ -22,9 +22,13 @@ func main() {
 		port = "8080"
 	}
 
-	// Cachear template
+	// Cachear template una vez al iniciar el servidor
 	tmplPath := filepath.Join("templates", "index.html")
-	tmpl = template.Must(template.ParseFiles(tmplPath))
+	var err error
+	tmpl, err = template.ParseFiles(tmplPath)
+	if err != nil {
+		log.Fatalf("Error cargando template: %v", err)
+	}
 
 	// Archivos estáticos
 	http.Handle("/styles/", http.StripPrefix("/styles/", http.FileServer(http.Dir("styles"))))
@@ -40,16 +44,13 @@ func main() {
 }
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
-	tmplPath := filepath.Join("templates", "index.html")
-	tmpl, err := template.ParseFiles(tmplPath)
-	if err != nil {
-		http.Error(w, "Error cargando template", http.StatusInternalServerError)
-		return
-	}
+	// No reparsear el template cada vez, usar el cacheado en la variable global tmpl
 
-	err = tmpl.Execute(w, nil)
+	err := tmpl.Execute(w, nil)
 	if err != nil {
+		// Solo escribir error una vez y no llamar WriteHeader dos veces
 		http.Error(w, "Error al renderizar template", http.StatusInternalServerError)
+		return
 	}
 }
 
