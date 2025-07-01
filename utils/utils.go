@@ -6,7 +6,6 @@ import (
 	"time"
 )
 
-// GetLatestModTime devuelve la �ltima fecha de modificaci�n de los archivos en los directorios dados
 func GetLatestModTime(dirs ...string) time.Time {
 	var latest time.Time
 

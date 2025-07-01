@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"html/template"
 	"log"
 	"net/http"
@@ -22,7 +23,6 @@ func main() {
 		port = "8080"
 	}
 
-	// Cachear template una vez al iniciar el servidor
 	tmplPath := filepath.Join("templates", "index.html")
 	var err error
 	tmpl, err = template.ParseFiles(tmplPath)
@@ -30,13 +30,8 @@ func main() {
 		log.Fatalf("Error cargando template: %v", err)
 	}
 
-	// Archivos estáticos
 	http.Handle("/styles/", http.StripPrefix("/styles/", http.FileServer(http.Dir("styles"))))
-
-	// Página principal
 	http.HandleFunc("/", serveHome)
-
-	// SSE para recarga automática
 	http.HandleFunc("/events", handleSSE)
 
 	log.Println("Servidor en http://localhost:" + port)
@@ -44,14 +39,13 @@ func main() {
 }
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
-	// No reparsear el template cada vez, usar el cacheado en la variable global tmpl
-
-	err := tmpl.Execute(w, nil)
+	var buf bytes.Buffer
+	err := tmpl.Execute(&buf, nil)
 	if err != nil {
-		// Solo escribir error una vez y no llamar WriteHeader dos veces
 		http.Error(w, "Error al renderizar template", http.StatusInternalServerError)
 		return
 	}
+	buf.WriteTo(w)
 }
 
 func handleSSE(w http.ResponseWriter, r *http.Request) {
