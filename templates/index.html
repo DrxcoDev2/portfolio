@@ -260,16 +260,16 @@ Proyectos
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add("animate__animated");
-              observer.unobserve(entry.target); // para que s�lo se anime una vez
+              observer.unobserve(entry.target); 
             }
           });
         },
         {
-          threshold: 0.1, // 10% visible para disparar animaci�n
+          threshold: 0.1,
         }
       );
   
-      // Selecciona todos los elementos con clases de animaci�n
+
       document.querySelectorAll(".animate__fadeIn, .animate__fadeInLeft, .animate__fadeInRight").forEach(el => {
         observer.observe(el);
       });
