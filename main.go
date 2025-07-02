@@ -42,10 +42,10 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 	var buf bytes.Buffer
 	err := tmpl.Execute(&buf, nil)
 	if err != nil {
-		http.Error(w, "Error al renderizar template", http.StatusInternalServerError)
+		http.Redirect(w, r, "/error", http.StatusTemporaryRedirect)
 		return
 	}
-	_, _ = buf.WriteTo(w)
+	buf.WriteTo(w)
 }
 
 func handleSSE(w http.ResponseWriter, r *http.Request) {
