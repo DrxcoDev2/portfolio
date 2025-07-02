@@ -25,3 +25,8 @@
   animation-name: fadeInRight;
   animation-duration: 3s;
 }
+
+.gradient-1 {
+  background: #2A7B9B;
+  background: linear-gradient(153deg, rgba(42, 123, 155, 1) 0%, rgba(237, 83, 232, 1) 100%);
+}

@@ -45,7 +45,7 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error al renderizar template", http.StatusInternalServerError)
 		return
 	}
-	buf.WriteTo(w)
+	_, _ = buf.WriteTo(w)
 }
 
 func handleSSE(w http.ResponseWriter, r *http.Request) {
@@ -59,12 +59,28 @@ func handleSSE(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	notify := r.Context().Done()
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
 	for {
-		time.Sleep(1 * time.Second)
-		modTime := utils.GetLatestModTime("templates", "styles")
-		if modTime.After(lastModTime) {
-			lastModTime = modTime
-			_, _ = w.Write([]byte("data: reload\n\n"))
+		select {
+		case <-notify:
+			return
+		case <-ticker.C:
+			modTime := utils.GetLatestModTime("templates", "styles")
+			if modTime.After(lastModTime) {
+				lastModTime = modTime
+				_, err := w.Write([]byte("data: reload\n\n"))
+				if err != nil {
+					return
+				}
+			} else {
+				_, err := w.Write([]byte(": ping\n\n"))
+				if err != nil {
+					return
+				}
+			}
 			flusher.Flush()
 		}
 	}
