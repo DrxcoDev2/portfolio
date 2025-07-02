@@ -40,7 +40,7 @@ func main() {
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
 	var buf bytes.Buffer
-	err := tmpl.Execute(&buf, nil)
+	err := tmpl.Execute(&buf, "Hola a mi portfolio!")
 	if err != nil {
 		http.Redirect(w, r, "/error", http.StatusTemporaryRedirect)
 		return
